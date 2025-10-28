@@ -1,12 +1,16 @@
 package selenium_learn;
 
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class OpenGoogle {
 
@@ -15,13 +19,19 @@ public class OpenGoogle {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.google.com");
         
-        driver.manage().window().maximize() ;       // Search for "amazon"
-        driver.findElement(By.className("gLFyf")).sendKeys("amazon", Keys.ENTER);
+        //Explicit wait 
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
+        
+        
+        driver.manage().window().maximize(); // Search for "amazon"
+        //wait for search box
+        WebElement open = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("gLFyf")));
+        open.sendKeys("amazon", Keys.ENTER);
 
         Thread.sleep(20000);
-        
-        driver.findElement(By.partialLinkText("Shop online at Amazon India")).click();
-        
+        //wait for link text 
+        WebElement link_seen = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Shop online at Amazon India")));
+        link_seen.click();
         // or driver.findElement(By.xpath("//a[@class='sVXRqc']")).click();
 
 	}
